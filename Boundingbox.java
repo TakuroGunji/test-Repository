@@ -1,51 +1,82 @@
 import java.awt.Color;
 import java.awt.Graphics;
-
 import javax.swing.JFrame;
 
-public class Boundingbox extends JFrame implements Runnable{
+class Bbox{
+	
 	private int x,y,vx,vy;
-	public static void main(String args[]){
-		new Boundingbox();
+	private int cr,cg,cb;
+	
+	public Bbox(){
+		x = Boundingbox.getRnd(50,320); 
+		y = Boundingbox.getRnd(50,320); 
+		vx = Boundingbox.getRnd(1,5);
+		vy = Boundingbox.getRnd(1,5);
+		cr = Boundingbox.getRnd(0,250);
+		cg = Boundingbox.getRnd(0,250);
+		cb = Boundingbox.getRnd(0,250);
+	}
+	public void move(){
+		x += vx; 
+		y += vy;
+		
+		if(x < 2 || x > 350)
+			vx = (int)(Boundingbox.getRnd(1,2) * -vx);
+		if(y < 20 || y > 350)
+			vy = (int)(Boundingbox.getRnd(1,2) * -vy);
+	}
+	public void draw(Graphics g){
+		g.setColor(new Color(cr,cg,cb));//” ‚Ì‰‚ÌFw’è
+		g.fillRect(x,y,40,40);//” ‚Ì‰‚ğ•`Ê
+	}
 }
 
-public Boundingbox(){
+public class Boundingbox extends JFrame implements Runnable{
+	private Bbox box[];
 	
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¨­å®š
+	//ƒ‰ƒ“ƒ_ƒ€ŠÖ”
+	public static int getRnd(int min,int max){
+		return (int)((Math.random())*(max - min) + min);
+	}
+	
+	public static void main(String args[]){
+		new Boundingbox();
+	}
+		
+	public Boundingbox(){
+		box = new Bbox[20];
+		for(int i=0;i < 20;i++){
+			box[i] = new Bbox();
+		}
+	
+	//ƒEƒBƒ“ƒhƒE‚Ìİ’è
 	setLocation(200,200);
 	setSize(400,400);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setVisible(true);
-	x = 50; 
-	y = 60;
-	vx = 3;
-	vy = 4;
+	
 	new Thread(this).start();
 	
-	
-}
-
-public void paint(Graphics g){
-	g.setColor(Color.black);//ç®±ã®è‰²æŒ‡å®š
-	g.fillRect(0,0,400,400); //x,y,æ¨ª400,ç¸¦400ã®box
-	g.setColor(Color.white);//ç®±ã®ç¸ã®è‰²æŒ‡å®š
-	g.drawRect(x,y,40,40);//ç®±ã®ç¸ã‚’æå†™
-	
-	x += vx;
-	y += vy;
-	
-	if(x < 2 || x > 350)
-		vx = -vx;
-	if(y < 20 || y > 350)
-		vy = -vy;
-}
-public void run(){
-	while(true){
-		try{
-			Thread.sleep(10);
-		}catch(Exception e){
-		}
-		repaint();
 	}
- }
+
+	public void paint(Graphics g){
+		
+	g.setColor(Color.black);//” ‚ÌFw’è
+	g.fillRect(0,0,400,400); //x,y,‰¡400,c400‚Ìbox
+	
+		for(int i = 0;i < 20;i++){
+			box[i].move();
+			box[i].draw(g);
+		}
+	
+	}
+	public void run(){
+		while(true){
+			try{
+				Thread.sleep(10);
+			}catch(Exception e){
+			}
+			repaint();
+		}
+	}
 }
