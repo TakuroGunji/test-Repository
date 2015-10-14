@@ -21,9 +21,9 @@ class Bbox{
 		y += vy;
 		
 		if(x < 2 || x > 350)
-			vx = (int)(Boundingbox.getRnd(1,2) * -vx);
+			vx = (int)(Boundingbox.getRnd(1,3) * -vx);
 		if(y < 20 || y > 350)
-			vy = (int)(Boundingbox.getRnd(1,2) * -vy);
+			vy = (int)(Boundingbox.getRnd(1,3) * -vy);
 	}
 	public void draw(Graphics g){
 		g.setColor(new Color(cr,cg,cb));//” ‚Ì‰‚ÌFw’è
